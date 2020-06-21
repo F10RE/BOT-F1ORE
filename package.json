@@ -1,0 +1,15 @@
+{
+  "name": "bot-f1ore",
+  "version": "1.0.0",
+  "description": "",
+  "main": "f1ore.js",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fiore",
+  "license": "ISC"
+}
