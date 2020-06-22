@@ -4,5 +4,5 @@ module.exports.run = async (bot, message,args) => {
     message.channel.send('Я работаю!))');
 };
 module.exports.help = {
-    name: "."
+    names: ["."]
 };
