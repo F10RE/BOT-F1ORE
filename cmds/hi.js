@@ -4,5 +4,6 @@ module.exports.run = async (bot, message, args) => {
     message.channel.send(`Приветик, ${args.user.username}!))`);
 };
 module.exports.help = {
-    names: ["привет", "hi"]
+    names: ["привет", "hi"],
+    description: '!привет (!hi) -- :wave: и тебе привет'
 };

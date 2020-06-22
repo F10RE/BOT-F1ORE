@@ -5,7 +5,11 @@ const fs = require('fs');
 let config = require('./f1oreconfig.json');
 let token = config.token;
 let prefix = config.prefix;
-let profile = require('./profile.json');
+try {
+  var profile = require('./profile.json');
+} catch (exc) {
+  var profile = {};
+}
 
 fs.readdir('./cmds/', (err, files) => {
   if (err) console.log(err);
@@ -30,32 +34,29 @@ bot.on('ready', () => {
 });
 
 bot.on('message', async message => {
-<<<<<<< HEAD
-=======
-  if(message.author.bot) return;
-  if(message.channel.type == "dm") return;
+  if (message.author.bot) return;
+  if (message.channel.type == "dm") return;
   let uid = message.author.id;
-  if(!profile[uid]) {
+  if (!profile[uid]) {
     profile[uid] = {
-      coins:1000,
-      warns:0,
-      xp:0,
-      lvl:0,
+      coins: 1000,
+      warns: 0,
+      xp: 0,
+      lvl: 0,
 
     };
   };
   let u = profile[uid];
   u.coins += 10;
   u.xp += 1;
-  if(u.xp>= (u.lvl * 100)){
+  if (u.xp >= (u.lvl * 100)) {
     u.xp = 0
     u.lvl += 1;
   }
-  fs.writeFile('./profile.json',JSON.stringify(profile),(err)=>{
-    if(err) console.log(err);
+  fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
+    if (err) console.log(err);
   });
   let user = message.author;
->>>>>>> d41914632f6a3ba0eff5a1edfb676cab8f167f52
   let messageArray = message.content.split(" ");
   let command = messageArray[0].toLowerCase();
   let args = {
@@ -72,14 +73,17 @@ bot.login(token);
 // Exit handlers
 function shutdown(status) {
   console.log('Выключаюсь...')
-  // You can add more stuff to do when the bot stops here
-  // like close open files or whatever
+  fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
+    if (err) console.log(err);
+  });
   bot.destroy(); // Logs off Discord, leaving no stray sessions active
-  if (status.exit){
+  if (status.exit) {
     process.exit();
   }
 }
 
-process.on('exit', shutdown.bind(null, {exit: false}));
-process.on('SIGINT', shutdown.bind(null, {exit: true}));
-process.on('uncaughtException', shutdown.bind(null, {exit: true}));
+process.on('exit', shutdown.bind(null, { exit: false }));
+process.on('SIGINT', shutdown.bind(null, { exit: true }));
+process.on('SIGUSR1', shutdown.bind(null, { exit: true }));
+process.on('SIGUSR2', shutdown.bind(null, { exit: true }));
+process.on('uncaughtException', shutdown.bind(null, { exit: true }));
