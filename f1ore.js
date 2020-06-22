@@ -5,6 +5,7 @@ const fs = require('fs');
 let config = require('./f1oreconfig.json');
 let token = config.token;
 let prefix = config.prefix;
+let profile = require('./profile.json');
 
 fs.readdir('./cmds/', (err, files) => {
   if (err) console.log(err);
@@ -29,9 +30,32 @@ bot.on('ready', () => {
 });
 
 bot.on('message', async message => {
-  if (message.author.bot) return;
-  if (message.channel.type == "dm") return;
+<<<<<<< HEAD
+=======
+  if(message.author.bot) return;
+  if(message.channel.type == "dm") return;
+  let uid = message.author.id;
+  if(!profile[uid]) {
+    profile[uid] = {
+      coins:1000,
+      warns:0,
+      xp:0,
+      lvl:0,
+
+    };
+  };
+  let u = profile[uid];
+  u.coins += 10;
+  u.xp += 1;
+  if(u.xp>= (u.lvl * 100)){
+    u.xp = 0
+    u.lvl += 1;
+  }
+  fs.writeFile('./profile.json',JSON.stringify(profile),(err)=>{
+    if(err) console.log(err);
+  });
   let user = message.author;
+>>>>>>> d41914632f6a3ba0eff5a1edfb676cab8f167f52
   let messageArray = message.content.split(" ");
   let command = messageArray[0].toLowerCase();
   let args = {
