@@ -2,12 +2,13 @@ const Discord = require('discord.js');
 const ms = require('ms');
 
 module.exports.run = async (bot, message, args) => {
-    // if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send('Недостаточно права для использования команды!')
+    if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send('Недостаточно права для использования команды!')
 
     let member = message.guild.member(message.mentions.users.first() || message.guild.members.find(m => m.user.username == args[0] || m.id == args[0]))
 
     if (!member) return message.channel.send('Пожалуйста, укажите участника')
     if (member.hasPermission("MANAGE_ROLES")) return message.channel.send('Я не могу замутить этого пользователя, он слишком силён')
+    if (member == message.member) return message.channel.send('Извини, не могу. Рука не поднимается')
 
     let mutetime = args.pop(1) || '15s';
     let muterole = await message.guild.roles.fetch(r => r.name == 'Muted')
