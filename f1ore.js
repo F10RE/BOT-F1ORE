@@ -40,7 +40,7 @@ bot.on('message', async message => {
   if (!profile[uid]) {
     profile[uid] = {
       coins: 1000,
-      warns: [],
+      warns: 0,
       xp: 0,
       lvl: 0
 
@@ -86,4 +86,3 @@ process.on('exit', shutdown.bind(null, { exit: false }));
 process.on('SIGINT', shutdown.bind(null, { exit: true }));
 process.on('SIGUSR1', shutdown.bind(null, { exit: true }));
 process.on('SIGUSR2', shutdown.bind(null, { exit: true }));
-process.on('uncaughtException', shutdown.bind(null, { exit: true }));
