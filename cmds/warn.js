@@ -10,17 +10,19 @@ module.exports.run = async (bot, message,args) => {
 
     if(!args[0]) return send("Вы не указали пользователя!");
 
-    if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("У вас нет прав");
+    console.log(message.member.permissions.toArray());
+
+    if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send(`${message.author.username}, у вас не хватает прав.`);
     let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[0]));
 
-    if(!rUser) return send("Пользователь не найден")
+    if(!rUser) return send("Пользователь не найден.")
     
     profile[rUser.id].warns++;
     fs.writeFile('./profile.json',JSON.stringify(profile),(err)=>{
         if(err) console.log(err);
     });
     if(profile[rUser.id].warns >=30){
-        message.guild.member(rUser).kick("30/30 Предупреждений");
+        message.guild.member(rUser).kick("30/30 Предупреждений.");
     }
     let embed = new Discord.MessageEmbed()
     .setDescription("Предупреждение!")
