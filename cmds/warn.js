@@ -7,7 +7,6 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send(msg);
         }
 
-
         if (!args[0]) return send("Вы не указали пользователя!");
 
         console.log(message.member.permissions.toArray());
@@ -34,8 +33,8 @@ module.exports.run = async (bot, message, args) => {
     } catch (err) {
         console.log(`1.${err.name}\n2.${err.stack}`);
     }
-
 };
+
 module.exports.help = {
     names: ["warn"],
 };

@@ -11,6 +11,7 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(':new_moon: Решка!')
     }
 };
+
 module.exports.help = {
     names: ["монетка"]
 };
