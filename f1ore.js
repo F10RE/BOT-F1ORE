@@ -40,7 +40,7 @@ bot.on('message', async message => {
   if (!profile[uid]) {
     profile[uid] = {
       coins: 1000,
-      warns: [],
+      warns: 0,
       xp: 0,
       lvl: 0
 

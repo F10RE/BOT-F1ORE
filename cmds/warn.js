@@ -8,9 +8,8 @@ module.exports.run = async (bot, message,args) => {
     }    
      
 
-
     if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("У вас нет прав");
-    let rUser = message.guild.member(message.users.first() || message.guild.members.fetch(args[0]));
+    let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[0]));
 
     if(!args[0]) return send("Вы не указали пользователя!");
     if(!rUser) return send("Пользователь не найден")
@@ -30,8 +29,7 @@ module.exports.run = async (bot, message,args) => {
 
     message.channel.send(embed);
     }catch(err){
-    if(err.name === "ReferenceError")
-    console.log(`1.${err.name}\n2.${err.message}\n3.${err.stack}`);
+    console.log(`1.${err.name}\n2.${err.stack}`);
     }    
 
 };
