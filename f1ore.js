@@ -56,13 +56,9 @@ bot.on('message', async message => {
   fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
     if (err) console.log(err);
   });
-  let user = message.author;
   let messageArray = message.content.split(" ");
   let command = messageArray[0].toLowerCase();
-  let args = {
-    'query': messageArray.slice(1), // Previously args
-    'user': user  // user with username, userid, guilds
-  }
+  let args = messageArray.slice(1);
   if (!message.content.startsWith(prefix)) return;
   let cmd = bot.commands.get(command.slice(prefix.length));
   if (cmd) cmd.run(bot, message, args);
@@ -86,4 +82,3 @@ process.on('exit', shutdown.bind(null, { exit: false }));
 process.on('SIGINT', shutdown.bind(null, { exit: true }));
 process.on('SIGUSR1', shutdown.bind(null, { exit: true }));
 process.on('SIGUSR2', shutdown.bind(null, { exit: true }));
-process.on('uncaughtException', shutdown.bind(null, { exit: true }));
