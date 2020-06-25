@@ -1,8 +1,13 @@
-const Discord = module.require("discord.js");
+const Discord = require("discord.js");
 const fs = require("fs");
 
 var commandList = [];
 
+/**
+ * @param {Discord.Client} bot
+ * @param {Discord.Message} message
+ * @param {Array} args
+ */
 module.exports.run = async (bot, message, args) => {
     if (commandList.length == 0) {
         for (const command of bot.commands.values()) {

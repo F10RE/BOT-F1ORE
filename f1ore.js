@@ -5,11 +5,7 @@ const fs = require('fs');
 let config = require('./f1oreconfig.json');
 let token = config.token;
 let prefix = config.prefix;
-try {
-    var profile = require('./profile.json');
-} catch (exc) {
-    var profile = {};
-}
+const profile = require('./profileManager').profile;
 
 fs.readdir('./cmds/', (err, files) => {
     if (err) console.log(err);
@@ -37,25 +33,14 @@ bot.on('message', async message => {
     if (message.author.bot) return;
     if (message.channel.type == "dm") return;
     let uid = message.author.id;
-    if (!profile[uid]) {
-        profile[uid] = {
-            coins: 1000,
-            warns: 0,
-            xp: 0,
-            lvl: 0
-
-        };
-    };
-    let u = profile[uid];
-    u.coins += 10;
-    u.xp += 1;
-    if (u.xp >= (u.lvl * 100)) {
-        u.xp = 0
-        u.lvl += 1;
+    let user = profile.get(uid) || profile.add(uid);
+    user.coins += 10;
+    user.xp += 1;
+    if (user.xp >= (user.lvl * 100)) {
+        user.xp = 0
+        user.lvl += 1;
     }
-    fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
-        if (err) console.log(err);
-    });
+    profile.update(uid, user);
     let messageArray = message.content.split(" ");
     let command = messageArray[0].toLowerCase();
     let args = messageArray.slice(1);
@@ -69,6 +54,9 @@ bot.login(token);
 // Exit handlers
 function shutdown(status) {
     console.log('Выключаюсь...')
+    if (status.store){
+        profile.shut()
+    }
     // fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
     //     if (err) console.log(err);
     // });
@@ -78,7 +66,6 @@ function shutdown(status) {
     }
 }
 
-process.on('exit', shutdown.bind(null, { exit: false }));
-process.on('SIGINT', shutdown.bind(null, { exit: true }));
+process.on('SIGINT', shutdown.bind(null, { exit: false, store: true }));
 process.on('SIGUSR1', shutdown.bind(null, { exit: true }));
 process.on('SIGUSR2', shutdown.bind(null, { exit: true }));

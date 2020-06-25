@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
 const ms = require('ms');
 
+/**
+ * @param {Discord.Client} bot
+ * @param {Discord.Message} message
+ */
 module.exports.run = async (bot, message, args) => {
     // if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send('Недостаточно права для использования команды!')
 
