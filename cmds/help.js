@@ -11,7 +11,7 @@ var commandList = [];
 module.exports.run = async (bot, message, args) => {
     if (commandList.length == 0) {
         for (const command of bot.commands.values()) {
-            if(command.help.description != commandList[Math.max(0, commandList.length - 1)]){
+            if (command.help.description && (command.help.description != commandList[Math.max(0, commandList.length - 1)])) {
                 commandList.push(command.help.description);
             }
         }
