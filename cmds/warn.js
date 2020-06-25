@@ -23,17 +23,20 @@ module.exports.run = async (bot, message, args) => {
 
         let userProfile = profile.get(rUser.id) || profile.add(rUser.id);
         userProfile.warns += 1;
-        profile.update(rUser.id, {warns: userProfile.warns})
+        profile.update(rUser.id, { warns: userProfile.warns })
 
         if (userProfile.warns >= 30) {
             message.guild.member(rUser).kick("30/30 Предупреждений.");
         }
         let embed = new Discord.MessageEmbed()
-            .setDescription("Предупреждение!")
-            .addField("Администратор", message.author.username)
-            .addField("Выдал предупреждение", `${rUser.user.username}`)
-            .addField("Кол-во предупреждений", `${userProfile.warns}/30`)
-
+            .setAuthor(message.author.tag, message.author.avatarURL({ size: 256 }))
+            .setTitle("Предупреждение!")
+            .addField("Получатель", `${rUser.user.tag}`, true)
+            .addField("Причина:", args.slice(1).join(' ') || 'Не указана. Плохой модератор. или он тестирует')
+            .addField("Номер предупреждения", userProfile.warns)
+            .setTimestamp()
+            .setFooter(`Выдал ${message.author.tag}`)
+            .setColor(0xDE8A0B)
         message.channel.send(embed);
     } catch (err) {
         console.log(`1.${err.name}\n2.${err.stack}`);
