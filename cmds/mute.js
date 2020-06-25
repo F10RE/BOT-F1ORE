@@ -14,9 +14,14 @@ module.exports.run = async (bot, message, args) => {
     if (member.hasPermission("MANAGE_ROLES")) return message.channel.send('Я не могу замутить этого пользователя, он слишком силён')
     if (member == message.member) return message.channel.send('Извини, не могу. Рука не поднимается')
 
-    let mutetime = args[1] || '15s';
+    try{
+        mutetime = ms(args[1])
+    }catch{
+        mutetime = ms('15s');
+    }
     let muterole = message.guild.roles.cache.find(r => r.name == "Muted")
     if (!muterole) {
+        console.log('Роль Muted не найдена, создаём')
         muterole = await message.guild.roles.create({
             data: {
                 name: 'Muted',
@@ -24,7 +29,6 @@ module.exports.run = async (bot, message, args) => {
             }
         })
         message.guild.channels.cache.each(async (channel) => {
-            console.log(channel)
             await channel.updateOverwrite(muterole, { SEND_MESSAGES: false, ADD_REACTIONS: false })
         })
     }
@@ -42,8 +46,8 @@ module.exports.run = async (bot, message, args) => {
 
     setTimeout(function () {
         member.roles.remove(muterole.id)
-        message.channel.send(`${member.user.tag} был размучен спустя ${ms(ms(mutetime))} молчания`)
-    }, ms(mutetime))
+        message.channel.send(`${member.user.tag} был размучен спустя ${ms(mutetime)} молчания`)
+    }, mutetime)
 }
 
 module.exports.help = {

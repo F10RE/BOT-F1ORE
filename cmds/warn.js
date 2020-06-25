@@ -14,8 +14,6 @@ module.exports.run = async (bot, message, args) => {
 
         if (!args[0]) return send("Вы не указали пользователя!");
 
-        console.log(message.member.permissions.toArray());
-
         if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send(`${message.author.username}, у вас не хватает прав.`);
         let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[0]));
 
