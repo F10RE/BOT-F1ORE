@@ -5,7 +5,8 @@
   "main": "f1ore.js",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "ms": "^2.1.2"
+    "ms": "^2.1.2",
+    "strftime": "^0.10.0"
   },
   "devDependencies": {},
   "scripts": {
