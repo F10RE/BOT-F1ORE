@@ -38,7 +38,6 @@ class ProfileManager {
         fs.writeFile('./profile.json', JSON.stringify(this.profile), (err) => {
             if (err) console.log(err);
         });
-        // console.log(this.profile);
     }
 
     shut() {
