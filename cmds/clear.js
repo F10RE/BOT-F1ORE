@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
     if (del < 1 || del > 100) return message.reply('Укажите пожалуйста кол-во сообщений в пределах 1 и 100')
 
     await message.channel.bulkDelete(del) // удаляем число сообщений
-    send(`Удалено __**${del}**__ сообщений`)
+    // console.log(`Удалено __**${del}**__ сообщений`)
 }
 
 module.exports.help = {
