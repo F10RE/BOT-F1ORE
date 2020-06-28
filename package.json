@@ -6,7 +6,10 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "moment": "^2.27.0",
-    "ms": "^2.1.2"
+    "ms": "^2.1.2",
+    "opusscript": "0.0.7",
+    "youtube-api-v3-search": "^1.2.1",
+    "ytdl-core": "^2.1.7"
   },
   "devDependencies": {},
   "scripts": {
