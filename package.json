@@ -5,6 +5,7 @@
   "main": "f1ore.js",
   "dependencies": {
     "discord.js": "^12.2.0",
+    "ffmpeg-static": "^4.2.5",
     "moment": "^2.27.0",
     "ms": "^2.1.2",
     "opusscript": "0.0.7",

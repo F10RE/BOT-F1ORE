@@ -6,6 +6,7 @@ let config = require('./f1oreconfig.json');
 let token = config.token;
 let prefix = config.prefix;
 const profile = require('./profileManager').profile;
+const queues= require('./queueManager').qs
 
 fs.readdir('./cmds/', (err, files) => {
     if (err) console.log(err);
@@ -56,10 +57,10 @@ function shutdown(status) {
     console.log('Выключаюсь...')
     if (status.store){
         profile.shut()
+        queues.forEach((queue) => {
+            queue.disconnect()
+        })
     }
-    // fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
-    //     if (err) console.log(err);
-    // });
     bot.destroy(); // Logs off Discord, leaving no stray sessions active
     if (status.exit) {
         process.exit();

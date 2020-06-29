@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
     if (!member) return message.channel.send('Пожалуйста, укажите участника')
     if (member.hasPermission("MANAGE_ROLES")) return message.channel.send('Я не могу замутить этого пользователя, он слишком силён')
     if (member == message.member) return message.channel.send('Извини, не могу. Рука не поднимается')
-
+    let mutetime = ms('15s');
     try{
         mutetime = ms(args[1])
     }catch{
@@ -35,6 +35,7 @@ module.exports.run = async (bot, message, args) => {
     let reason = args.slice(2).join(' ') || 'Не указана';
     if (member.roles.cache.has(muterole.id)) return message.channel.send('Пользователь уже замучен, дайте ему перерыв')
     await member.roles.add(muterole)
+    console.log(mutetime)
 
     let embed = new Discord.MessageEmbed()
         .setTitle('Мут', true)
