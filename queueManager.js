@@ -19,6 +19,7 @@ class queueGuild {
             .then(VoiceConnection => this.connection = VoiceConnection)
             .catch((reason) => console.error(reason))
         console.log(`Подключился к каналу ${voiceChannel.name}`)
+        this.volume = 0.75
     }
 
     async add(id, requester) {
@@ -89,11 +90,13 @@ class queueGuild {
             return
         }
         let videoStream = ytdl(this.queue[0].id, { filter: 'audioonly', highWaterMark: 1 << 25 })
-        this.dispatcher = this.connection.play(videoStream, { volume: 0.75 })
+        /** @type {Discord.StreamDispatcher} */
+        this.dispatcher = this.connection.play(videoStream, { volume: this.volume })
         this.dispatcher.on('finish', () => {
             this.queue.shift()
             this.play()
         })
+        this.dispatcher.on('volumeChange', (oldVolume, newVolume) => {this.volume = newVolume}) // чтобы громкость оставалась между треками
     }
 
     disconnect() {
@@ -123,4 +126,6 @@ module.exports.removeQueue = (guildID) => {
     qs.delete(guildID)
     return true
 }
+
 module.exports.qs = qs
+module.exports.queueGuild = queueGuild.prototype
