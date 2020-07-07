@@ -22,14 +22,33 @@ module.exports.run = async (bot, message, args) => {
         dnd: 'Не беспокоить',
         offline: 'Не в сети'
     }
-    let game
-    if (!argsUser.presence.game) game = `Имеет статус: **${statuses[argsUser.presence.status]}**` //Если нет статуса игры, будет отображён статус активности
-    else if (argsUser.presence.game.type == 0) game = `Играет в **${argsUser.presence.game.name}**` //Если участник имеет статус "Играет в ..."
-    else if (argsUser.presence.game.type == 1) game = `Стримит [**${argsUser.presence.game.name}**](${argsUser.presence.game.url})` //Если участник имеет статус "Стримит ..."
-    else if (argsUser.presence.game.type == 2) game = `Слушает **${argsUser.presence.game.name}**` //Если участник имеет статус "Слушает ..."
-    else if (argsUser.presence.game.type == 3) game = `Смотрит **${argsUser.presence.game.name}**` //Если участник имеет статус "Смотрит ..."
+    let embed = new MessageEmbed()
 
     moment.locale('ru')
+    let activityLocalized = {
+        "PLAYING": "Играет",
+        "STREAMING": "Стримит",
+        "LISTENING": "Слушоеть",
+        "WATCHING": "Смотрит"
+    }
+    argsUser.presence.activities.forEach(activity =>{
+        if (activity.type == "CUSTOM_STATUS"){
+            embed.setDescription(`Статус: ${activity.state}`)
+            return
+        }
+        let game = {name: "", value: []}
+        game.name = activityLocalized[activity.type]
+        game.value.push(`**${activity.name}**`)
+        if(activity.details) game.value.push(activity.details)
+        if(activity.state) game.value.push(`*${activity.state}*`)
+        if(activity.timestamps.start){
+            let duration = moment().diff(activity.timestamps.start)
+            duration = moment.utc(duration).format("HH:mm:ss").replace('/^00:/g', '')
+            game.value.push(`В течение ${duration}`)
+        }
+        embed.addFields(game)
+    })
+    
     let registerUptime = moment(message.createdTimestamp).to(argsUser.createdTimestamp)
     let joinUptime = moment(message.createdTimestamp).to(message.guild.member(argsUser).joinedTimestamp)
     // moment() --> создаёт объект момента из текущего(почти) времени, с которым мы работаем.
@@ -37,9 +56,7 @@ module.exports.run = async (bot, message, args) => {
     // moment().locale() --> ставит язык на русский
     // moment().format() --> почти как strftime, но немного другие переменные. см больше: https://momentjs.com/docs/#/displaying/format/
 
-    let embed = new MessageEmbed()
-        .setTitle(argsUser.username)
-        .setDescription(game)
+    embed.setTitle(argsUser.username)
         .addField('Дата регистрации', `${moment(argsUser.createdTimestamp).format('D.MM.YYYY HH:mm')}\n(${registerUptime})`, true)
         .addField('Дата вступления', `${moment(message.guild.member(argsUser).joinedTimestamp).format('D.MM.YYYY HH:mm')}\n(${joinUptime})`, true)
         .addField('Роли', message.guild.member(argsUser).roles.cache.filter(r => r.id != message.guild.id).map(role => role.name).join(', ') || 'Не имеет')
@@ -48,9 +65,10 @@ module.exports.run = async (bot, message, args) => {
         .setThumbnail(message.author.avatarURL({ size: 256 }))
         .setFooter(`ID: ${argsUser.id}`)
     // ты был близок, от тебя требовалось увидеть `message.author.avatarURL({ size: 256 })` и скопировать его в .setThumbnail
-    await message.channel.send(embed)
+    message.channel.send(embed)
 }
 
 module.exports.help = {
-    names: ["uinfo"]
+    names: ["uinfo"],
+    description: "Выводит информацию о пользователе -- его статус, дата вступления на сервер и проч. Если пользователь не указан, выводит информацию про вас."
 };

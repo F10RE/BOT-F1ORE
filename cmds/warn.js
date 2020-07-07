@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const fs = require("fs");
 const profile = require('../profileManager').profile;
 
 /**
@@ -30,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
             .setAuthor(message.author.tag, message.author.avatarURL({ size: 256 }))
             .setTitle("Предупреждение!")
             .addField("Получатель", `${rUser.user.tag}`, true)
-            .addField("Причина:", args.slice(1).join(' ') || 'Не указана. Плохой модератор. или он тестирует')
+            .addField("Причина:", args.slice(1).join(' ') || 'Не указана. Плохой модератор. Или он тестирует')
             .addField("Номер предупреждения", userProfile.warns)
             .setTimestamp()
             .setFooter(`Выдал ${message.author.tag}`)

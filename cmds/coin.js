@@ -19,5 +19,5 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     names: ["монетка"],
-    description: '!монетка -- :first_quarter_moon: Подкинь монетку, проверь свою удачу'
+    description: ':first_quarter_moon: Подкинь монетку, проверь свою удачу'
 };

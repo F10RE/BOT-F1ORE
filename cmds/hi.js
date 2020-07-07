@@ -9,5 +9,5 @@ module.exports.run = async (bot, message, args) => {
 };
 module.exports.help = {
     names: ["привет", "hi"],
-    description: '!привет (!hi) -- :wave: и тебе привет'
+    description: ':wave: и тебе привет'
 };

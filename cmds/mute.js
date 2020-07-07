@@ -16,7 +16,8 @@ module.exports.run = async (bot, message, args) => {
     let mutetime = ms('15s');
     try{
         mutetime = ms(args[1])
-    }catch{
+    }catch (err){
+        console.error(err)
         mutetime = ms('15s');
     }
     let muterole = message.guild.roles.cache.find(r => r.name == "Muted")

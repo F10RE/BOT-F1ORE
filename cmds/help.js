@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const fs = require("fs");
+const pfx = require('../f1oreconfig.json').prefix
 
 var commandList = [];
 
@@ -10,15 +10,21 @@ var commandList = [];
  */
 module.exports.run = async (bot, message, args) => {
     if (commandList.length == 0) {
-        for (const command of bot.commands.values()) {
-            if (command.help.description && (command.help.description != commandList[Math.max(0, commandList.length - 1)])) {
-                commandList.push(command.help.description);
+        let last = ""
+        for(const command of bot.commands.values()) {
+            if(command.help.description && last != command.help.description){
+                commandList.push({name: command.help.names.join(', '), value: command.help.description})
+                last = command.help.description
             }
         }
     }
-    message.channel.send(`Список команд: ${commandList.join('\r\n')}`);
+    let list = new Discord.MessageEmbed()
+        .setTitle("Список команд")
+        .setDescription(`Каждая команда имеет префикс ${pfx}`)
+        .addFields(commandList)
+    message.channel.send(list);
 };
 module.exports.help = {
     names: ["help"],
-    description: '!help -- :flag_white: выводит этот список'
+    description: ':flag_white: выводит этот список'
 };

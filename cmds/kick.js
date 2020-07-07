@@ -14,8 +14,7 @@ module.exports.run = async (bot, message, args) => {
     .addField('Пользователь', `${member.user.tag}`)
     .addField('Причина', `${reason}`)
     .setTimestamp()
-    await message.channel.send(embed)
-
+    message.channel.send(embed)
 }
 
 module.exports.help = {
