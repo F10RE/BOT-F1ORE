@@ -6,7 +6,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setThumbnail(message.guild.iconURL({dynamic : true}))
             .setColor('#f3f3f3')
-            .setTitle(`Cтатиска сервера`)
+            .setTitle(`Cтатистика сервера`)
             .addFields(
                 {
                     name: "Владелец: ",
@@ -39,13 +39,13 @@ module.exports = {
                     inline: true,
                 },
                 {
-                    name: `Верификация: `,
-                    value: message.guild.verified ? 'Сервер верифицирован' : `Сервер не верифицирован`,
+                    name: "Верификация: ", // Неоправданное использование template literal
+                    value: message.guild.verified ? 'Сервер верифицирован' : 'Сервер не верифицирован', // Неоправданное использование template literal, непоследовательное использование одинарной кавычки
                     inline: true
                 },
                 {
-                    name: 'Бустеры: ',
-                    value: message.guild.premiumSubscriptionCount >= 1 ? `${message.guild.premiumSubscriptionCount} бустеров!` : `Бустеров нет!`,
+                    name: "Бустеры: ", // Непоследовательное использование одинарных кавычек
+                    value: message.guild.premiumSubscriptionCount >= 1 ? `${message.guild.premiumSubscriptionCount} бустеров!` : 'Бустеров нет!', // Неоправданное использование template literal
                     inline: true
                 },
                 {
@@ -54,7 +54,7 @@ module.exports = {
                     inline: true
                 }
             )
-        await message.channel.send(embed)
+        message.channel.send(embed)
     }
 }
 

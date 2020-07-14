@@ -1,5 +1,5 @@
 const api = require('../f1oreconfig.json');
-const api_key = api.api_key;
+const api_key = api.api_key; // Отличный ключ -- undefined
 const { MessageEmbed } = require('discord.js');
 const axios = require('axios')
 
@@ -9,7 +9,7 @@ module.exports = {
             return message.channel.send(`Пожалуйста, укажите город!`)
         }
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${args}&units=imperial&appid=${api_key}`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(args.join(' '))}&units=imperial&appid=${api_key}`;
 
         let response, city;
 
@@ -33,11 +33,11 @@ module.exports = {
                 },
                 {
                     name: "Погода: ",
-                    value: city.weather[0].main
+                    value: city.weather[0].main // Нереалистично, для городов России константой возвращать "Хуёвая"
                 },
                 {
                     name: "Ощущается как: ",
-                    value: `${city.main.feels_like} °C`,
+                    value: `${city.main.feels_like} °C`, // FeelsLikeTeenSpirit
                     inline: true
                 },
                 {
@@ -62,7 +62,7 @@ module.exports = {
                 }
             )
 
-        await message.channel.send(embed)
+        message.channel.send(embed)
     }
 }
 
