@@ -4,6 +4,7 @@
   "description": "",
   "main": "f1ore.js",
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^12.2.0",
     "ffmpeg-static": "^4.2.5",
     "moment": "^2.27.0",
