@@ -11,7 +11,7 @@ const moment = require('moment'); // юзаем moment -- он может бол
  * @param {Message} message
  */
 module.exports.run = async (bot, message, args) => {
-    let member = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[0]))
+    let member = message.guild.member(message.mentions.members.first() || message.guild.members.fetch(args[0]))
     let argsUser
     if (member) argsUser = member.user
     else argsUser = message.author

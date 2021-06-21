@@ -83,7 +83,28 @@ function inRangeInt(value, min, max) { return parseInt(value) && parseInt(value)
 
 async function addSong(user, queue, query) {
     let response = await queue.add(query.slice(1).join(' '), user)
-    if (!response) return new Discord.MessageAttachment().setFile('https://i.imgflip.com/46mc5l.jpg')
+    if (typeof response == "number") {
+		let reply = new Discord.MessageEmbed()
+			.setTitle("An error has occured")
+			.setColor(0xde2002)
+		let errorCause = {title: "It was some other, unexpected error", subtitle: "Thus we can't provide much info on the error"}
+		switch(response) {
+			case -1: 
+				errorCause.title = "We weren't able to find the video"
+				errorCause.subtitle = "Try a different search term or check your tokens" // Лучше так не делать но говорить правильно я точно не умею
+				break
+			case -2:
+				errorCause.title = "YouTube info library had a stroke"
+				errorCause.subtitle = "We're sorry about that, yet the situation is out of our control"
+				break
+			case -3:
+				errorCause.title = "The requested video was too long. Or too short"
+				errorCause.subtitle = "Try looking for a shorter one"
+				break
+		}
+		reply.addField(errorCause.title, errorCause.subtitle)
+		return reply
+	}
     let queuePosition = `Номер в очереди — ${response.meta.position}`
     if (response.meta.position == 0) { queuePosition = "Трек играет прямо сейчас" }
     reply = new Discord.MessageEmbed()

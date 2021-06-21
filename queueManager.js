@@ -7,7 +7,7 @@ const youtubeKey = require('./f1oreconfig.json').youtube_api_v3
 
 var qs = new Map()
 
-class queueGuild {
+class QueueGuild {
     /**
      * 
      * @param {Discord.Guild} guild 
@@ -26,28 +26,37 @@ class queueGuild {
         if (!(validateID(id) || validateURL(id))) {
             try {
                 let result = await ytsearch(youtubeKey, { q: id, part: 'snippet', type: 'video' })
-                if (!result.items[0]) return null
+                if (!result.items[0]) return -1
                 id = result.items[0].id.videoId
             } catch (err) {
                 console.error(err)
-                id = 'dQw4w9WgXcQ'
+                // id = 'dQw4w9WgXcQ'
+				return -1
+				// TODO: Авокадный репорт об ошибке
             }
         }
         let video = await ytdl.getInfo(ytdl.getVideoID(id))
-        if (video.length_seconds > 3600 || video.length_seconds < 25) {
-            return null
+			.then(info => info.videoDetails)
+			.catch(e => {
+				console.error(e)
+				return -2
+			})
+        if (typeof response == "number") { return video }
+		let videoLength = parseInt(video.lengthSeconds)
+        if (videoLength > 3600 || videoLength < 25) {
+            return -3
         }
         let position = this.queue.length
-        let duration = moment.duration(video.length_seconds, 'seconds')
-        let length = `${duration.minutes()}:${duration.seconds().toString().padStart(2, '0')}`
+        let duration = moment.duration(videoLength, 'seconds')
+        let formattedLength = `${duration.minutes()}:${duration.seconds().toString().padStart(2, '0')}`
         let videoData = {
-            id: video.video_id,
+            id: video.videoId,
             meta: {
                 title: video.title,
                 url: video.video_url,
                 author: video.author.name,
-                length: video.length_seconds,
-                formattedLength: length,
+                length: videoLength,
+                formattedLength: formattedLength,
                 position: position
             },
             user: requester
@@ -105,19 +114,19 @@ class queueGuild {
 }
 
 module.exports.getQueue = (guildID) => {
-    /** @type {queueGuild} */
+    /** @type {QueueGuild} */
     let queue = qs.get(guildID)
     return queue
 }
 
 module.exports.newQueue = (guild, voiceChannel) => {
-    let queue = new queueGuild(guild, voiceChannel)
+    let queue = new QueueGuild(guild, voiceChannel)
     qs.set(guild.id, queue)
     return queue
 }
 
 module.exports.removeQueue = (guildID) => {
-    /** @type {queueGuild} */
+    /** @type {QueueGuild} */
     let queue = qs.get(guildID)
     if (!queue) {
         return false
@@ -128,4 +137,4 @@ module.exports.removeQueue = (guildID) => {
 }
 
 module.exports.qs = qs
-module.exports.queueGuild = queueGuild.prototype
+module.exports.queueGuild = QueueGuild.prototype

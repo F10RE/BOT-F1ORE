@@ -4,14 +4,15 @@
   "description": "",
   "main": "f1ore.js",
   "dependencies": {
-    "axios": "^0.19.2",
-    "discord.js": "^12.2.0",
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.3",
     "ffmpeg-static": "^4.2.5",
     "moment": "^2.27.0",
     "ms": "^2.1.2",
     "opusscript": "0.0.7",
     "youtube-api-v3-search": "^1.2.1",
-    "ytdl-core": "^2.1.7"
+    "ytdl": "^1.4.1",
+    "ytdl-core": "^4.8.2"
   },
   "devDependencies": {},
   "scripts": {

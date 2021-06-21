@@ -50,6 +50,16 @@ bot.on('message', async message => {
     if (cmd) cmd.run(bot, message, args);
 });
 
+bot.on("message", async message => {
+    if (message.guild.id != "485861240711938058") return;
+    if (!message.mentions.has(bot.user.id)) return;
+    if (!["269766141533093890", "485858994901221408"].includes(message.author.id)) return;
+    if (message.content.includes("Съеби нахуй, пожалуйста")){
+        process.emit("SIGINT")
+        console.log("Убиваюсь..")
+    }
+})
+
 bot.login(token);
 
 // Exit handlers
