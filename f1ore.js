@@ -25,6 +25,7 @@ fs.readdir('./cmds/', (err, files) => {
 
 bot.on('ready', () => {
     console.log(`Запустился бот ${bot.user.username}`)
+    bot.user.setActivity('zxcursed phonk', {type:"LISTENING"}).catch(console.error)
     bot.generateInvite(["ADMINISTRATOR"]).then(link => {
         console.log(link);
     })
